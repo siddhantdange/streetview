@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 
 #import <CoreLocation/CoreLocation.h>
+#import <AVFoundation/AVFoundation.h>
 
-@interface MainViewController : UIViewController <CLLocationManagerDelegate>
+@interface MainViewController : UIViewController <CLLocationManagerDelegate, AVCaptureVideoDataOutputSampleBufferDelegate>
 
 @end

@@ -22,6 +22,8 @@
 		255D35A417CD2C53000A9E03 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 255D35A217CD2C53000A9E03 /* InfoPlist.strings */; };
 		255D35A617CD2C53000A9E03 /* StreetViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 255D35A517CD2C53000A9E03 /* StreetViewTests.m */; };
 		255D35B117CD2D99000A9E03 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 255D35B017CD2D99000A9E03 /* CoreLocation.framework */; };
+		255D35B317CD7204000A9E03 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 255D35B217CD7204000A9E03 /* AddressBook.framework */; };
+		255D35B517CE9C55000A9E03 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 255D35B417CE9C55000A9E03 /* AVFoundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +57,8 @@
 		255D35A317CD2C53000A9E03 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		255D35A517CD2C53000A9E03 /* StreetViewTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StreetViewTests.m; sourceTree = "<group>"; };
 		255D35B017CD2D99000A9E03 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		255D35B217CD7204000A9E03 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		255D35B417CE9C55000A9E03 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +66,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				255D35B517CE9C55000A9E03 /* AVFoundation.framework in Frameworks */,
+				255D35B317CD7204000A9E03 /* AddressBook.framework in Frameworks */,
 				255D35B117CD2D99000A9E03 /* CoreLocation.framework in Frameworks */,
 				255D357D17CD2C52000A9E03 /* CoreGraphics.framework in Frameworks */,
 				255D357F17CD2C52000A9E03 /* UIKit.framework in Frameworks */,
@@ -104,6 +110,8 @@
 		255D357917CD2C52000A9E03 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				255D35B417CE9C55000A9E03 /* AVFoundation.framework */,
+				255D35B217CD7204000A9E03 /* AddressBook.framework */,
 				255D35B017CD2D99000A9E03 /* CoreLocation.framework */,
 				255D357A17CD2C52000A9E03 /* Foundation.framework */,
 				255D357C17CD2C52000A9E03 /* CoreGraphics.framework */,

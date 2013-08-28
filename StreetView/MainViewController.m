@@ -8,15 +8,19 @@
 
 #import "MainViewController.h"
 
+#import <AddressBook/AddressBook.h>
+
 @interface MainViewController ()
 
 //CL
 @property (nonatomic, strong) CLLocationManager *locationManager; 
 @property (nonatomic, strong) CLGeocoder *geoCoder;
+@property (nonatomic, strong) CLPlacemark *latestPlace;
 
 //IB 
 @property (weak, nonatomic) IBOutlet UITextView *gpsText;
-@property (weak, nonatomic) IBOutlet UITextView *compassText;
+@property (strong, nonatomic) IBOutlet UIView *cameraView;
+
 
 //self
 @property (nonatomic, assign) int counter;
@@ -44,6 +48,30 @@
     self.geoCoder = [[CLGeocoder alloc] init];
     
     self.counter = 0;
+    
+    //----- SHOW LIVE CAMERA PREVIEW -----
+	AVCaptureSession *session = [[AVCaptureSession alloc] init];
+	session.sessionPreset = AVCaptureSessionPresetMedium;
+	
+	CALayer *viewLayer = self.cameraView.layer;
+	NSLog(@"viewLayer = %@", viewLayer);
+	
+	AVCaptureVideoPreviewLayer *captureVideoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:session];
+	
+	captureVideoPreviewLayer.frame = self.cameraView.bounds;
+	[self.cameraView.layer addSublayer:captureVideoPreviewLayer];
+	
+	AVCaptureDevice *device = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+	
+	NSError *error = nil;
+	AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device error:&error];   
+	if (!input) {
+		// Handle the error appropriately.
+		NSLog(@"ERROR: trying to open camera: %@", error);
+	}
+	[session addInput:input];
+	
+	[session startRunning];
 }
 
 #pragma mark - CLLocationManagerDelegate
@@ -63,8 +91,15 @@
         self.lat = currentLocation.coordinate.latitude;
         
         //get street name
-        [self.geoCoder reverseGeocodeLocation:currentLocation completionHandler:^(NSArray *placemarks,   NSError *error) {
-            NSLog(@"placemarks: %@", placemarks);
+        [self.geoCoder reverseGeocodeLocation:currentLocation completionHandler:^(NSArray *placemarks,            NSError *error) {
+            
+            //if place exists 
+            if(placemarks && placemarks.count){
+                self.latestPlace = placemarks[0];
+                NSLog(@"mark: %@", self.latestPlace);
+                [self.gpsText setText:self.latestPlace.addressDictionary[(__bridge NSString*)  kABPersonAddressStreetKey]];
+                NSLog(@"text: %@", self.latestPlace.addressDictionary[(__bridge NSString*) kABPersonAddressStreetKey]);
+            }
         }];
     }
     
@@ -74,9 +109,8 @@
 
 - (IBAction)getData:(id)sender {
     
-    //gps
-    [self.gpsText setText:[NSString stringWithFormat:@"Lon: %f\nLat: %f", self.lon, self.lat]];
-   
+    //gps             
+    [self.gpsText setText:[NSString stringWithFormat:@"place: %@", (__bridge NSString*)kABPersonAddressStreetKey]];
 }
 
 - (void)didReceiveMemoryWarning
