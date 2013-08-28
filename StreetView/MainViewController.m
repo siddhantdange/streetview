@@ -13,12 +13,13 @@
 @interface MainViewController ()
 
 //CL
-@property (nonatomic, strong) CLLocationManager *locationManager; 
+@property (nonatomic, strong) CLLocationManager *locationManager;                                            
 @property (nonatomic, strong) CLGeocoder *geoCoder;
 @property (nonatomic, strong) CLPlacemark *latestPlace;
 
 //IB 
-@property (weak, nonatomic) IBOutlet UITextView *gpsText;
+@property (weak, nonatomic) IBOutlet UITextView *streetText;
+@property (weak, nonatomic) IBOutlet UITextView *cityText;
 @property (strong, nonatomic) IBOutlet UIView *cameraView;
 
 
@@ -47,7 +48,19 @@
     //CL geocoder
     self.geoCoder = [[CLGeocoder alloc] init];
     
+    //StreetView
     self.counter = 0;
+    
+    //UI
+    UIToolbar *streetBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.streetText.frame.size       .width, self.streetText.frame.size.height)];
+    [streetBar setBarTintColor:[UIColor blackColor]];
+    [self.streetText addSubview:streetBar];
+    [self.streetText sendSubviewToBack:streetBar];
+    
+    UIToolbar *cityBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0, 0.0, self.cityText.frame.size.width, self.cityText.frame.size.height)];
+    [cityBar setBarTintColor:[UIColor blackColor]];
+    [self.cityText addSubview:cityBar];
+    [self.cityText sendSubviewToBack:cityBar];
     
     //----- SHOW LIVE CAMERA PREVIEW -----
 	AVCaptureSession *session = [[AVCaptureSession alloc] init];
@@ -72,6 +85,8 @@
 	[session addInput:input];
 	
 	[session startRunning];
+    //StreetView
+    self.counter = 0;
 }
 
 #pragma mark - CLLocationManagerDelegate
@@ -91,14 +106,17 @@
         self.lat = currentLocation.coordinate.latitude;
         
         //get street name
-        [self.geoCoder reverseGeocodeLocation:currentLocation completionHandler:^(NSArray *placemarks,            NSError *error) {
+        [self.geoCoder reverseGeocodeLocation:currentLocation completionHandler:^(NSArray *placemarks,                    NSError *error) {
             
             //if place exists 
             if(placemarks && placemarks.count){
                 self.latestPlace = placemarks[0];
-                NSLog(@"mark: %@", self.latestPlace);
-                [self.gpsText setText:self.latestPlace.addressDictionary[(__bridge NSString*)  kABPersonAddressStreetKey]];
-                NSLog(@"text: %@", self.latestPlace.addressDictionary[(__bridge NSString*) kABPersonAddressStreetKey]);
+                
+                //set street
+                [self.streetText setText:self.latestPlace.addressDictionary[(__bridge NSString*)    kABPersonAddressStreetKey]];
+                
+                //set city
+                [self.cityText setText:self.latestPlace.addressDictionary[(__bridge NSString*)   kABPersonAddressCityKey]];
             }
         }];
     }
@@ -109,8 +127,11 @@
 
 - (IBAction)getData:(id)sender {
     
-    //gps             
-    [self.gpsText setText:[NSString stringWithFormat:@"place: %@", (__bridge NSString*)kABPersonAddressStreetKey]];
+    //street
+    [self.streetText setText:self.latestPlace.addressDictionary[(__bridge NSString*)    kABPersonAddressStreetKey]];
+    
+    //city
+    [self.cityText setText:self.latestPlace.addressDictionary[(__bridge NSString*)   kABPersonAddressCityKey]];
 }
 
 - (void)didReceiveMemoryWarning
